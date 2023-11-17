@@ -4,12 +4,14 @@ import {Component} from 'react'
 
 import {v4} from 'uuid'
 
+import {format} from 'date-fns'
+
 import AppointmentItem from '../AppointmentItem'
 
 import './index.css'
 
 class Appointments extends Component {
-  state = {input: '', date: '', appointmentList: []}
+  state = {input: '', date: '', appointmentList: [], appointment: false}
 
   onInputChange = event => {
     this.setState({input: event.target.value})
@@ -19,6 +21,17 @@ class Appointments extends Component {
     this.setState({date: event.target.value})
   }
 
+  isToggeled = id => {
+    this.setState(prevState => ({
+      appointmentList: prevState.appointmentList.map(eachContact => {
+        if (id === eachContact.id) {
+          return {...eachContact, isStar: !eachContact.isStar}
+        }
+        return eachContact
+      }),
+    }))
+  }
+
   onAppointmentShow = event => {
     event.preventDefault()
     const {input, date} = this.state
@@ -26,7 +39,7 @@ class Appointments extends Component {
       id: v4(),
       input,
       date,
-      appointment: false,
+      isStar: false,
     }
     this.setState(prevState => ({
       appointmentList: [...prevState.appointmentList, newAppointment],
@@ -35,27 +48,14 @@ class Appointments extends Component {
     }))
   }
 
-  isToggeled = id => {
-    this.setState(prevState => ({
-      appointmentList: prevState.appointmentList.map(eachContact => {
-        if (id === eachContact.id) {
-          return {...eachContact, appointment: !eachContact.appointment}
-        }
-        return eachContact
-      }),
-    }))
-  }
-
   onFilters = () => {
-    const {appointmentList} = this.state
-    const filteredLists = appointmentList.filter(
-      eachList => eachList.appointment === true,
-    )
-    this.setState({appointmentList: filteredLists})
+    this.setState(prevState => ({appointment: !prevState.appointment}))
   }
 
   render() {
-    const {input, date, appointmentList} = this.state
+    const {input, date, appointmentList, appointment} = this.state
+    const filters = appointmentList.filter(each => each.isStar === true)
+    const results = appointment ? filters : appointmentList
     return (
       <div className="bg-container">
         <div className="card-container">
@@ -108,7 +108,7 @@ class Appointments extends Component {
             </button>
           </div>
           <ul className="list-container">
-            {appointmentList.map(eachAppointment => (
+            {results.map(eachAppointment => (
               <AppointmentItem
                 key={eachAppointment.id}
                 appointmentDetails={eachAppointment}
