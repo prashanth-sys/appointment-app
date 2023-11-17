@@ -53,7 +53,8 @@ class Appointments extends Component {
   }
 
   render() {
-    const {input, date, appointmentList, appointment} = this.state
+    const formatteDate = format(new Date(), 'dd MMMM yyyy, EEEE')
+    const {input, appointmentList, appointment} = this.state
     const filters = appointmentList.filter(each => each.isStar === true)
     const results = appointment ? filters : appointmentList
     return (
@@ -83,7 +84,7 @@ class Appointments extends Component {
                   className="input"
                   placeholder="dd/mm/yy"
                   onChange={this.onDateChange}
-                  value={date}
+                  value={formatteDate}
                 />
                 <button className="button" type="submit" data-testid="star">
                   Add
