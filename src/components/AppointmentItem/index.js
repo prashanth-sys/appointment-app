@@ -12,13 +12,14 @@ const AppointmentItem = props => {
     : 'https://assets.ccbp.in/frontend/react-js/appointments-app/star-img.png'
 
   return (
-    <li>
+    <li className="list-items">
       <div className="list-card-container">
-        <h1>{input}</h1>
+        <p>{input}</p>
         <button
           className="favorite-buttons"
           type="button"
           onClick={onClickFavorites}
+          data-testid="star"
         >
           <img src={favorites} alt="star" />
         </button>

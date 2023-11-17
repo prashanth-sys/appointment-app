@@ -46,6 +46,14 @@ class Appointments extends Component {
     }))
   }
 
+  onFilters = () => {
+    const {appointmentList} = this.state
+    const filteredLists = appointmentList.filter(
+      eachList => eachList.appointment === true,
+    )
+    this.setState({appointmentList: filteredLists})
+  }
+
   render() {
     const {input, date, appointmentList} = this.state
     return (
@@ -55,14 +63,14 @@ class Appointments extends Component {
             <div className="input-container">
               <h1 className="main-heading">Add Appointment</h1>
               <form onSubmit={this.onAppointmentShow}>
-                <label className="label" htmlFor="Text">
+                <label className="label" htmlFor="Title">
                   TITLE
                 </label>
                 <input
                   type="search"
-                  id="Text"
+                  id="Title"
                   className="input"
-                  placeholder="Text"
+                  placeholder="Title"
                   onChange={this.onInputChange}
                   value={input}
                 />
@@ -71,13 +79,13 @@ class Appointments extends Component {
                 </label>
                 <input
                   type="date"
-                  id="labelText"
+                  id="Date"
                   className="input"
                   placeholder="dd/mm/yy"
                   onChange={this.onDateChange}
                   value={date}
                 />
-                <button className="button" type="submit">
+                <button className="button" type="submit" data-testid="star">
                   Add
                 </button>
               </form>
@@ -91,7 +99,11 @@ class Appointments extends Component {
           <hr className="hr" />
           <div className="card-heading-container">
             <h1 className="appointment">Appointments</h1>
-            <button className="cancel-button" type="button">
+            <button
+              className="cancel-button"
+              type="button"
+              onClick={this.onFilters}
+            >
               Starred
             </button>
           </div>
