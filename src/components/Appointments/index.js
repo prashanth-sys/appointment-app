@@ -21,17 +21,28 @@ class Appointments extends Component {
 
   onAppointmentShow = event => {
     event.preventDefault()
-
+    const {input, date} = this.state
     const newAppointment = {
       id: v4(),
-      input: '',
-      date: '',
+      input,
+      date,
       appointment: false,
     }
     this.setState(prevState => ({
       appointmentList: [...prevState.appointmentList, newAppointment],
       input: '',
       date: '',
+    }))
+  }
+
+  isToggeled = id => {
+    this.setState(prevState => ({
+      appointmentList: prevState.appointmentList.map(eachContact => {
+        if (id === eachContact.id) {
+          return {...eachContact, appointment: !eachContact.appointment}
+        }
+        return eachContact
+      }),
     }))
   }
 
@@ -44,18 +55,18 @@ class Appointments extends Component {
             <div className="input-container">
               <h1 className="main-heading">Add Appointment</h1>
               <form onSubmit={this.onAppointmentShow}>
-                <label className="label" htmlFor="labelText">
+                <label className="label" htmlFor="Text">
                   TITLE
                 </label>
                 <input
                   type="search"
-                  id="labelText"
+                  id="Text"
                   className="input"
-                  placeholder="Title"
+                  placeholder="Text"
                   onChange={this.onInputChange}
                   value={input}
                 />
-                <label className="label" htmlFor="labelText">
+                <label className="label" htmlFor="Date">
                   DATE
                 </label>
                 <input
@@ -84,11 +95,12 @@ class Appointments extends Component {
               Starred
             </button>
           </div>
-          <ul>
+          <ul className="list-container">
             {appointmentList.map(eachAppointment => (
               <AppointmentItem
                 key={eachAppointment.id}
                 appointmentDetails={eachAppointment}
+                isToggeled={this.isToggeled}
               />
             ))}
           </ul>

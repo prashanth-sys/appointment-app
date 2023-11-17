@@ -1,1 +1,8 @@
 /* Write your CSS here */
+.list-card-container {
+  display: flex;
+}
+.favorite-buttons {
+  background-color: transparent;
+  border-width: 0px;
+}
